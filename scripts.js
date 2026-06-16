@@ -88,4 +88,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         animate();
     }
+
+    /* ==========================================================================
+       2. CONTROLE DO MODAL DE BIOGRAFIA (SOBRE XENO)
+       ========================================================================== */
+    const xenoBtn = document.getElementById('xeno-about-btn');
+    const modal = document.getElementById('about-modal');
+    const closeBtn = document.querySelector('.modal-close');
+
+    if (xenoBtn && modal) {
+        xenoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Evita rolagem da página de fundo
+        });
+
+        const closeModal = () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restaura rolagem
+        };
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeModal);
+        }
+
+        // Fechar ao clicar no background escuro
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Fechar ao pressionar a tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
 });

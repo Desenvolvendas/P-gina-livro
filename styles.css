@@ -143,12 +143,34 @@ body {
 
 .profile-photo-wrapper {
     position: relative;
-    width: 220px;
-    height: 220px;
+    width: 260px;
+    height: 260px;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 25px rgba(0, 240, 255, 0.25));
+    transition: var(--transition-smooth);
+}
+
+.profile-photo-wrapper:hover {
+    transform: scale(1.03);
+    filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 35px rgba(0, 240, 255, 0.45));
+}
+
+.profile-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 22%; /* Squirclish rounded square, matching the icon proportions */
+    border: 1.5px solid rgba(0, 240, 255, 0.3); /* Match default icon stroke style */
+    overflow: hidden;
+    z-index: 2;
+    transition: var(--transition-smooth);
+}
+
+.profile-photo-wrapper:hover .profile-frame {
+    border-color: var(--color-cyan); /* Light up neon on hover */
 }
 
 .profile-photo {
@@ -156,18 +178,7 @@ body {
     height: 100%;
     object-fit: cover;
     object-position: center top;
-    border-radius: 50%;
-    border: 4.5px solid var(--color-cyan);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 240, 255, 0.25);
-    position: relative;
-    z-index: 2;
     transition: var(--transition-smooth);
-}
-
-.profile-photo-wrapper:hover .profile-photo {
-    transform: scale(1.03);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 240, 255, 0.5);
-    border-color: #fff;
 }
 
 .glow-orb {
@@ -175,10 +186,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 240px;
-    height: 240px;
-    background: radial-gradient(circle, rgba(0, 240, 255, 0.4) 0%, rgba(5, 8, 17, 0) 70%);
-    filter: blur(20px);
+    width: 290px;
+    height: 290px;
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, rgba(5, 8, 17, 0) 70%);
+    filter: blur(25px);
     z-index: 1;
     border-radius: 50%;
     animation: pulse-glow 4s infinite alternate ease-in-out;
@@ -341,6 +352,129 @@ body {
 }
 
 /* ==========================================================================
+   MODAL - BIOGRAFIA DO XENO
+   ========================================================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    background-color: rgba(2, 5, 18, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 20px;
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: rgba(6, 12, 38, 0.85);
+    border: 1.5px solid rgba(0, 240, 255, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.modal.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition-fast);
+}
+
+.modal-close:hover {
+    color: var(--color-cyan);
+    background: rgba(0, 240, 255, 0.08);
+}
+
+.modal-body {
+    padding: 36px 28px;
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    border-bottom: 1.5px solid rgba(0, 240, 255, 0.15);
+    padding-bottom: 12px;
+}
+
+.modal-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Custom scrollbar for modal content */
+.modal-text::-webkit-scrollbar {
+    width: 5px;
+}
+
+.modal-text::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+.modal-text::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.2);
+    border-radius: 10px;
+}
+
+.modal-text::-webkit-scrollbar-thumb:hover {
+    background: var(--color-cyan);
+}
+
+.modal-text p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+.modal-text p strong {
+    color: var(--color-cyan);
+}
+
+/* ==========================================================================
    RESPONSIVIDADE E AJUSTES DE TELA
    ========================================================================== */
 @media (max-width: 480px) {
@@ -354,20 +488,18 @@ body {
     }
     
     .profile-photo-wrapper {
-        width: 160px;
-        height: 160px;
+        width: 190px;
+        height: 190px;
         margin-bottom: 20px;
     }
     
-    .profile-photo {
-        border-radius: 50%;
-        border-width: 3.5px;
+    .profile-frame {
+        border-width: 1px;
     }
     
     .glow-orb {
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
+        width: 210px;
+        height: 210px;
     }
 
     .neon-deck {
