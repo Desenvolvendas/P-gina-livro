@@ -90,19 +90,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       2. CONTROLE DO MODAL DE BIOGRAFIA (SOBRE XENO)
+       2. CONTROLE DOS MODAIS INTERATIVOS (SOBRE XENO, MENTORIA, PALESTRAS)
        ========================================================================== */
-    const xenoBtn = document.getElementById('xeno-about-btn');
-    const modal = document.getElementById('about-modal');
-    const closeBtn = document.querySelector('.modal-close');
+    const modalTriggers = document.querySelectorAll('a[href^="#"]');
+    modalTriggers.forEach(trigger => {
+        const targetId = trigger.getAttribute('href').substring(1);
+        const modal = document.getElementById(targetId);
+        if (modal && modal.classList.contains('modal')) {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Evita rolagem da página de fundo
+            });
+        }
+    });
 
-    if (xenoBtn && modal) {
-        xenoBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Evita rolagem da página de fundo
-        });
-
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        const closeBtn = modal.querySelector('.modal-close');
         const closeModal = () => {
             modal.classList.remove('active');
             document.body.style.overflow = ''; // Restaura rolagem
@@ -125,5 +130,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeModal();
             }
         });
-    }
+    });
 });

@@ -474,6 +474,69 @@ body {
     color: var(--color-cyan);
 }
 
+.modal-subtitle {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.modal-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 10px 0 20px 0;
+}
+
+.modal-list li {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-list li::before {
+    content: "•";
+    color: var(--color-cyan);
+    font-size: 1.5rem;
+    line-height: 1;
+    text-shadow: 0 0 8px var(--color-cyan);
+}
+
+.modal-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #00f0ff 0%, #00a8ff 100%);
+    color: #020512 !important;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 14px 24px;
+    border-radius: 12px;
+    margin-top: 15px;
+    transition: var(--transition-smooth);
+    box-shadow: 0 5px 15px rgba(0, 240, 255, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: 100%;
+}
+
+.modal-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.45), 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.whatsapp-icon {
+    width: 20px;
+    height: 20px;
+}
+
 /* ==========================================================================
    RESPONSIVIDADE E AJUSTES DE TELA
    ========================================================================== */
