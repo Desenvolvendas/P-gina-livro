@@ -366,32 +366,34 @@ body {
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    background-color: rgba(2, 5, 18, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color: rgba(2, 5, 18, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: opacity 0.3s ease;
     padding: 20px;
+    will-change: opacity;
 }
 
+.modal:target,
 .modal.active {
     opacity: 1;
     pointer-events: auto;
 }
 
 .modal-content {
-    background: rgba(6, 12, 38, 0.85);
-    border: 1.5px solid rgba(0, 240, 255, 0.25);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15);
+    background: #060c26;
+    border: 1.5px solid rgba(0, 240, 255, 0.35);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 240, 255, 0.2);
     border-radius: 24px;
     width: 100%;
     max-width: 500px;
     position: relative;
-    transform: scale(0.9) translateY(20px);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
 }
 
+.modal:target .modal-content,
 .modal.active .modal-content {
     transform: scale(1) translateY(0);
 }
@@ -535,6 +537,73 @@ body {
 .whatsapp-icon {
     width: 20px;
     height: 20px;
+}
+
+/* Estilos dos Cards do Modal de WhatsApp */
+.whatsapp-option-card {
+    background: rgba(0, 240, 255, 0.03);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: var(--transition-smooth);
+}
+
+.whatsapp-option-card:hover {
+    border-color: rgba(0, 240, 255, 0.4);
+    background: rgba(0, 240, 255, 0.06);
+    box-shadow: 0 5px 20px rgba(0, 240, 255, 0.12);
+}
+
+.whatsapp-option-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.whatsapp-option-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.whatsapp-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(0, 240, 255, 0.15);
+    color: var(--color-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    white-space: nowrap;
+}
+
+.whatsapp-badge-direct {
+    background: rgba(37, 211, 102, 0.15);
+    color: #25d366;
+    border-color: rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-option-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.whatsapp-group-btn {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.25) !important;
+}
+
+.whatsapp-group-btn:hover {
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45), 0 0 15px rgba(37, 211, 102, 0.2) !important;
 }
 
 /* ==========================================================================

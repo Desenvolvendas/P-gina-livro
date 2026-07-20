@@ -1,5 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-    
+/* ==========================================================================
+   LINK TREE XENO - INTERACTIVE CANVAS & MODAL CONTROL SYSTEM
+   ========================================================================== */
+
+function initApp() {
     /* ==========================================================================
        1. CANVAS DE PARTÍCULAS INTERATIVAS (HTML5)
        ========================================================================== */
@@ -40,11 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // Bounce borders
                 if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
 
-                // Repel from mouse
                 if (mouse.x !== null && mouse.y !== null) {
                     let dx = this.x - mouse.x;
                     let dy = this.y - mouse.y;
@@ -60,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             draw() {
-                // Color is Cyan / Neon-blue
                 ctx.fillStyle = `rgba(0, 240, 255, ${this.opacity})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -90,45 +90,85 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       2. CONTROLE DOS MODAIS INTERATIVOS (SOBRE XENO, MENTORIA, PALESTRAS)
+       2. CONTROLE DE MODAIS (DELEGAÇÃO DE EVENTOS À PROVA DE FALHAS)
        ========================================================================== */
-    const modalTriggers = document.querySelectorAll('a[href^="#"]');
-    modalTriggers.forEach(trigger => {
-        const targetId = trigger.getAttribute('href').substring(1);
-        const modal = document.getElementById(targetId);
-        if (modal && modal.classList.contains('modal')) {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Evita rolagem da página de fundo
-            });
+    function closeModal(modalElement) {
+        if (modalElement) {
+            modalElement.classList.remove('active');
+        } else {
+            document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
         }
-    });
+        document.body.style.overflow = '';
+        
+        // Remove a hash do ID da URL de forma limpa para fechar o seletor CSS :target
+        if (window.location.hash) {
+            try {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            } catch (err) {
+                window.location.hash = '';
+            }
+        }
+    }
 
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        const closeBtn = modal.querySelector('.modal-close');
-        const closeModal = () => {
-            modal.classList.remove('active');
-            document.body.style.overflow = ''; // Restaura rolagem
-        };
+    function openModal(modalElement) {
+        document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+        if (modalElement) {
+            modalElement.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
 
+    // Escuta cliques globalmente via e.target.closest
+    document.addEventListener('click', (e) => {
+        // Abertura do modal ao clicar nos botões com href="#..."
+        const trigger = e.target.closest('a[href^="#"]');
+        if (trigger) {
+            const href = trigger.getAttribute('href');
+            if (href && href.length > 1) {
+                const targetId = href.substring(1);
+                const modal = document.getElementById(targetId);
+                if (modal && modal.classList.contains('modal')) {
+                    e.preventDefault();
+                    openModal(modal);
+                    return;
+                }
+            }
+        }
+
+        // Botão de fechar (X)
+        const closeBtn = e.target.closest('.modal-close');
         if (closeBtn) {
-            closeBtn.addEventListener('click', closeModal);
+            e.preventDefault();
+            const modal = closeBtn.closest('.modal');
+            closeModal(modal);
+            return;
         }
 
-        // Fechar ao clicar no background escuro
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
+        // Clique no fundo escuro fora do conteúdo do modal
+        if (e.target.classList.contains('modal')) {
+            closeModal(e.target);
+            return;
+        }
 
-        // Fechar ao pressionar a tecla ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
-        });
+        // Clique em links externos dentro de modais (ex: WhatsApp, Mercado Livre)
+        const extLink = e.target.closest('.modal a[target="_blank"]');
+        if (extLink) {
+            const modal = extLink.closest('.modal');
+            setTimeout(() => closeModal(modal), 150);
+        }
     });
-});
+
+    // Tecla ESC para fechar modais
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+// Inicializa imediatamente se o DOM já estiver pronto, ou no evento DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
