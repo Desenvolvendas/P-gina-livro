@@ -703,3 +703,21 @@ body {
         transform: translateX(4px);
     }
 }
+
+@media (min-width: 581px) and (max-width: 640px) {
+    .neon-deck {
+        gap: 8px;
+    }
+    .neon-icon-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+    .neon-icon-img {
+        width: 42px;
+        height: 42px;
+    }
+    .horizontal-text {
+        font-size: 0.68rem;
+    }
+}
+
